@@ -1,0 +1,37 @@
+version: '3.6'
+
+services:
+  sabnzbd:
+    image: linuxserver/sabnzbd:latest
+    environment:
+      PGID: 1001
+      PUID: 1002
+      TZ: "America/New_York"
+    ports:
+      - target: 8080
+        published: 8080
+        protocol: tcp
+      - target: 9090
+        published: 9090
+        protocol: tcp
+    volumes:
+      - /home/sabnzbd/config:/config
+      - /home/sabnzbd/incomplete-downloads:/incomplete-downloads
+      - /mnt/Media/Plex/tv:/media/tv
+      - /mnt/Media/Plex/movies:/media/movies
+      - /mnt/Media2/Nasha/P:/media/p
+  sonarr:
+    image: linuxserver/sonarr:latest
+    environment:
+      PGID: 1001
+      PUID: 1001
+      TZ: "America/New_York"
+    ports:
+      - target: 8989
+        published: 8989
+        protocol: tcp
+    volumes:
+      - /home/sonarr/config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/Media/Plex/tv:/tv
+      - /home/sabnzbd/config/Downloads/complete:/downloads
